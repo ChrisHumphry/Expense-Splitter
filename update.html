@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Expense Splitter</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+
+<body onload="printTab(); populate(); populateUsers(); printBill();">
+
+  <div class="wrapper">
+    <nav id="sidebar">
+      <div id="dismiss">
+        <i class="fas fa-arrow-left"></i>
+      </div>
+      <div class="sidebar-header">
+        <h3>Expense Splitter</h3>
+      </div>
+      <ul class="list-unstyled components">
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="income.html">Income</a>
+        </li>
+        <li>
+          <a href="addGroup.html">Add Group</a>
+        </li>
+        <li class="active">
+          <a href="update.html">Add Event</a>
+        </li>
+        <li>
+          <a href="event.html">Update Event</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span></span>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+      </nav>
+      <div class="jumbotron">
+        <div class="container text-left">
+          <h1>Expense Splitter</h1>
+          <div class="row">
+            <div class="col-sm-2"><p>Balance in Hand:</p>
+            </div>
+            <div class="col-sm-10"><p id = "balance"></p>
+            </div>
+          </div>
+          <p id="para"></p>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2>Update Group </h2>
+        <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Update Group</button>
+        <div class="modal fade" id="myModal">
+          <div class="modal-dialog modal-dialog-centered modal-lg modal-ku">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Update Group</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal" id="myForm">
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="gid">Group ID:</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="gid" name="gid" onchange="populateUsers()">
+                        <option selected>1</option>
+                      </select>
+                      <span class="help-block">Find the GroupID from the table below</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="event">Event:</label>
+                    <div class="col-sm-10">
+                      <input type="text-left" class="form-control" id="event" placeholder="Event" name="event">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="Users">Group members : </label>
+                    <div class="col-sm-10">
+                      <select class="form-control mdb-select md-form colorful-select dropdown-dark" multiple searchable="Search here.." id="Users", name="Users[]"></select>
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="button" onclick="populateName()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ok </button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="payee">Paid By:</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="payee" name="payee"></select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="gcash">Cash:</label>
+                    <div class="col-sm-10">
+                      <input type="text-left" class="form-control" id="gcash" placeholder="Cash" name="gcash">
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="button" onclick="updateGroup()" class="btn btn-default" data-dismiss="modal">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>        
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="container" id="alertbox"></div>
+
+      <div class="container">
+        <h2>Group Details</h2>
+        <br>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Group ID</th>
+              <th>Group Name</th>
+              <th>Group Members</th>
+              <th>Cash</th>
+            </tr>
+          </thead>
+          <tbody id="myTab">
+          </tbody>
+        </table>
+      </div>
+      <div class="container" id="billTab"></div>
+    </div>
+  </div>
+  <div class="overlay"></div>
+
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#sidebar").mCustomScrollbar({
+        theme: "minimal"
+      });
+
+      $('#dismiss, .overlay').on('click', function () {
+        $('#sidebar').removeClass('active');
+        $('.overlay').removeClass('active');
+      });
+
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').addClass('active');
+        $('.overlay').addClass('active');
+        $('.collapse.in').toggleClass('in');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+      });
+    });
+  </script>
+  <script src="input.js"></script>
+</body>
+</html>
